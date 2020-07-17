@@ -12,7 +12,7 @@ client = commands.Bot(command_prefix='.')
 @client.event
 async def on_ready():
     print('Bot Is Ready')
-
+	
 
 @client.command(aliases=['v','voic'])   # responses
 async def voice(ctx, *args):
@@ -35,6 +35,7 @@ async def roll(ctx, number):
         await ctx.send(f'{number} dice face: {random.randint(1, int(number))}')
     except:
         await ctx.send('Write the number of dice faces ".roll 6"')
+
  
 @client.command(aliases=['clr'])
 #@commands.has_permissions(administrator=True)  # general permissions
@@ -57,7 +58,7 @@ async def manual(ctx):
     await ctx.send('Manual:\n' + '.join - joins channel; .manual - open manual; .shortcuts - command shortcuts;'
                    '\n.path (address) - set active folder path; .track (name) - add track from active path; .folder - add folder;'
                    '\n.start - start playlist; .next (idx) - next track (track idx); .previous - previous track;\n.pause; .play - resume;'
-                   '\n.shuffleon; .shuffleoff; - turn on/off shuffle;\n.showlist (idx) - show playlist slice around current idx (idx); .clearlist;'
+                   '\n.shuffle - turn on/off shuffle;\n.showlist (idx) - show playlist slice around current idx (idx); .clearlist;'
                    '\n.clear (x) - clear last message (x messages);\n.voice (x) - bot saying (x);'
                    '\n.picture (x) - drop file (file name + extension);\n.roll (x) - rolling dice (faces)')
 
@@ -66,7 +67,7 @@ async def manual(ctx):
 async def shortcuts(ctx):
     await ctx.channel.purge(limit=1)
     await ctx.send('Shortcuts:\n' + '.join - .j; .manual - .m;\n.track - .t; .folder - .f;\n.start - .s; .next - .n; .previous - .pr; .pause - .p; .play - .pl;'
-                   '\n.showlist - .pll, .sl; .clearlist - .clrl;\n.shuffleon - .shon; .shuffleoff - .shof;'
+                   '\n.showlist - .pll, .sl; .clearlist - .clrl;\n.shuffle - .sh;'
                    '\n.clear - .clr; .voice - .v; .picture - .pic;')
 
 
@@ -98,18 +99,15 @@ async def track(ctx, *args):
     playlist.append([path_list[0], " ".join(args)])
 
 
-@client.command(aliases=['shon','sfon'])
-async def shuffleon(ctx):
+@client.command(aliases=['sh','shuffl'])
+async def shuffle(ctx):
     await ctx.channel.purge(limit=1)
-    shuffle[0] = 1
-    await ctx.send('Shuffle is on')
-
-
-@client.command(aliases=['shof','shoff','sfoff'])
-async def shuffleoff(ctx):
-    await ctx.channel.purge(limit=1)
-    shuffle[0] = 0
-    await ctx.send('Shuffle is off')
+    if shuffle[0] == 1:
+        shuffle[0] = 0
+        await ctx.send('Shuffle is off')
+    else:
+        shuffle[0] = 1
+        await ctx.send('Shuffle is on')
 
 
 index_list = [0,0]
